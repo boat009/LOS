@@ -1,0 +1,38 @@
+# Environment
+.env
+.env.local
+.env.production
+*.pem
+keys/
+
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Build output
+dist/
+build/
+*.js.map
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Docker volumes
+postgres_data/
+redis_data/
+
+# Claude Code local settings
+.claude/

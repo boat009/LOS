@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Use relative URL by default so requests go through nginx (same origin, no CORS)
+// Override with VITE_API_URL for local dev: VITE_API_URL=http://localhost:3000
+const BASE_URL = import.meta.env.VITE_API_URL ?? '';
 
 const api: AxiosInstance = axios.create({
   baseURL: `${BASE_URL}/api/v1`,

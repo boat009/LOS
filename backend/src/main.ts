@@ -42,9 +42,11 @@ async function bootstrap() {
 
   // CORS — restrict to known origins
   app.enableCors({
-    origin: config.get('nodeEnv') === 'development'
-      ? ['http://localhost:5173', 'http://localhost:3001']
-      : [process.env.FRONTEND_URL].filter(Boolean),
+    origin: nodeEnv === 'development'
+      ? true   // allow all origins in development (Docker local, Vite dev server, etc.)
+      : (process.env.FRONTEND_URL
+          ? [process.env.FRONTEND_URL]
+          : ['http://localhost', 'http://localhost:8080']),
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'x-hmac-signature', 'x-timestamp'],
     credentials: true,

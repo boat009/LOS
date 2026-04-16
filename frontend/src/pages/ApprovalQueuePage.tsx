@@ -43,7 +43,7 @@ export default function ApprovalQueuePage() {
         APPROVE: 'อนุมัติแล้ว ✅', REJECT: 'ปฏิเสธแล้ว ❌',
         RETURN: 'ส่งคืนแล้ว ↩️', ESCALATE: 'ส่งขึ้นระดับสูงแล้ว ⬆️',
       };
-      toast.success(labels[vars.payload.action] || 'ดำเนินการสำเร็จ');
+      toast.success(labels[vars.payload.action as Action] || 'ดำเนินการสำเร็จ');
       qc.invalidateQueries({ queryKey: ['approval-queue'] });
       setModal(null);
       setReason('');

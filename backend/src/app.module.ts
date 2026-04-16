@@ -70,11 +70,10 @@ import {
     // Global Redis client (used by AuthService, JwtStrategy, etc.)
     RedisModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        config: {
+      useFactory: (config: ConfigService) =>
+        ({
           url: config.get<string>('redis.url') || 'redis://localhost:6379',
-        },
-      }),
+        }) as any,
     }),
 
     MinioModule,

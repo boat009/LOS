@@ -136,7 +136,7 @@ export class ReportsService {
     sheet.getColumn('requestedAmount').numFmt = '#,##0.00';
     sheet.getColumn('approvedAmount').numFmt = '#,##0.00';
 
-    return workbook.xlsx.writeBuffer() as Promise<Buffer>;
+    return workbook.xlsx.writeBuffer() as unknown as Promise<Buffer>;
   }
 
   async getApproverPerformance(from: string, to: string) {

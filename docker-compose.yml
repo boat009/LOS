@@ -72,8 +72,8 @@ services:
       dockerfile: Dockerfile
     container_name: los_backend
     environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://los_user:los_password@postgres:5432/los_db
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://los_user:los_password@postgres:5432/los_db?sslmode=disable
       - REDIS_URL=redis://:los_redis_password@redis:6379
       - RABBITMQ_URL=amqp://los_rabbit:los_rabbit_password@rabbitmq:5672
       - MINIO_ENDPOINT=minio

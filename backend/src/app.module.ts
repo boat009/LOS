@@ -72,6 +72,7 @@ import {
       inject: [ConfigService],
       useFactory: (config: ConfigService) =>
         ({
+          type: 'single',
           url: config.get<string>('redis.url') || 'redis://localhost:6379',
         }) as any,
     }),

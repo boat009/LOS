@@ -91,7 +91,7 @@ async function seed() {
         primaryRole: u.role as any,
         approvalLevel: u.level,
         maxApprovalAmount: u.level ? [50000, 200000, 500000, 1000000, 3000000, 10000000, 999999999][u.level - 1] : null,
-        isMfaEnabled: u.level && u.level >= 3,
+        isMfaEnabled: Boolean(u.level && u.level >= 3),
         mfaType: u.level && u.level >= 3 ? 'TOTP' : null,
         isActive: true,
         passwordHistory: [ph],

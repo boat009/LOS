@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import Redis from 'ioredis';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import * as OTPAuth from 'otpauth';
 import { v4 as uuidv4 } from 'uuid';
 import * as dayjs from 'dayjs';

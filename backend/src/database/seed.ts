@@ -4,7 +4,7 @@
  */
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 import {
   Customer, LoanApplication, Product, User, Role,

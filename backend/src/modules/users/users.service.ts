@@ -3,7 +3,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import * as dayjs from 'dayjs';
 import { User } from '../../database/entities/user.entity';
 import { Role } from '../../database/entities/role.entity';

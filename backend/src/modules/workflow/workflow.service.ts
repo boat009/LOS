@@ -258,6 +258,45 @@ export class WorkflowService {
     };
   }
 
+  async listAllApplications(actorId: string, role: string, page = 1, limit = 50, search?: string, status?: string) {
+    const qb = this.appRepo
+      .createQueryBuilder('app')
+      .leftJoinAndSelect('app.customer', 'customer')
+      .leftJoinAndSelect('app.product', 'product')
+      .where('app.deleted_at IS NULL')
+      .orderBy('app.created_at', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    // SALE users only see their own applications
+    if (role === 'SALE') {
+      qb.andWhere('app.sale_user_id = :actorId', { actorId });
+    }
+
+    if (status) {
+      qb.andWhere('app.status = :status', { status });
+    }
+
+    if (search) {
+      qb.andWhere(
+        '(app.application_number ILIKE :q OR customer.name_th ILIKE :q)',
+        { q: `%${search}%` },
+      );
+    }
+
+    const [items, total] = await qb
+      .select([
+        'app.id', 'app.applicationNumber', 'app.status', 'app.requestedAmount',
+        'app.currentLevel', 'app.slaDeadline', 'app.slaBreached',
+        'app.createdAt', 'app.submittedAt', 'app.approvedAt',
+        'customer.nameTh',
+        'product.nameTh', 'product.productCode',
+      ])
+      .getManyAndCount();
+
+    return { items, total, page, limit };
+  }
+
   async getApplicationQueue(actorId: string, level: number) {
     return this.appRepo
       .createQueryBuilder('app')

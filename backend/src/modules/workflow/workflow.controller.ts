@@ -1,5 +1,5 @@
 import {
-  Controller, Post, Get, Body, Param, UseGuards, HttpCode, HttpStatus, Query,
+  Controller, Post, Get, Body, Param, UseGuards, HttpCode, HttpStatus, Query, ParseIntPipe, DefaultValuePipe, Optional,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { WorkflowService } from './workflow.service';
@@ -43,6 +43,18 @@ export class WorkflowController {
     @ClientIp() ip: string,
   ) {
     return this.workflowService.processApprovalAction(id, dto, user.id, ip);
+  }
+
+  @Get('applications')
+  @ApiOperation({ summary: 'List all applications (admin/sale — paginated)' })
+  async listAll(
+    @CurrentUser() user: any,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(50), ParseIntPipe) limit: number,
+    @Query('search') search?: string,
+    @Query('status') status?: string,
+  ) {
+    return this.workflowService.listAllApplications(user.id, user.primaryRole, page, limit, search, status);
   }
 
   @Get('queue')

@@ -76,6 +76,8 @@ export const workflowApi = {
   submitApplication: (id: string) => api.post(`/workflow/applications/${id}/submit`),
   approveAction: (id: string, data: any) => api.post(`/workflow/applications/${id}/action`, data),
   getQueue: () => api.get('/workflow/queue'),
+  listApplications: (params?: { page?: number; limit?: number; search?: string; status?: string }) =>
+    api.get('/workflow/applications', { params }),
   getApplicationDetail: (id: string) => api.get(`/workflow/applications/${id}`),
 };
 

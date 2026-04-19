@@ -16,6 +16,10 @@ export class RolesGuard implements CanActivate {
     if (!user) throw new ForbiddenException('Access denied');
 
     const userRoles: string[] = [user.primaryRole, ...(user.roles?.map((r: any) => r.name) || [])];
+
+    // ADMIN role bypasses all role-level restrictions (has wildcard permission)
+    if (userRoles.includes('ADMIN')) return true;
+
     const hasRole = requiredRoles.some((role) => userRoles.includes(role));
 
     if (!hasRole) {

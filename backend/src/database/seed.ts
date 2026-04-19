@@ -194,7 +194,41 @@ async function seed() {
   }
   console.log('  ✓ Questions + Options seeded');
 
-  // ── 6. Scoring Model ───────────────────────────────────────────────────────
+  // ── 6. Form Template ──────────────────────────────────────────────────────
+  const ftRepo = ds.getRepository(FormTemplate);
+  const fqRepo = ds.getRepository(FormQuestion);
+
+  let generalForm = await ftRepo.findOne({ where: { nameTh: 'แบบฟอร์มสินเชื่อทั่วไป' } });
+  if (!generalForm) {
+    generalForm = await ftRepo.save(ftRepo.create({
+      nameTh: 'แบบฟอร์มสินเชื่อทั่วไป',
+      nameEn: 'General Loan Application Form',
+      version: 1,
+      isActive: true,
+      description: 'แบบฟอร์มมาตรฐานสำหรับทุกผลิตภัณฑ์',
+      createdBy: 'seed',
+    }));
+    // Link all questions to this form template
+    const allQuestions = await qRepo.find({ order: { displayOrder: 'ASC' } });
+    for (let idx = 0; idx < allQuestions.length; idx++) {
+      await fqRepo.save(fqRepo.create({
+        formTemplateId: generalForm.id,
+        questionId: allQuestions[idx].id,
+        displayOrder: idx + 1,
+      }));
+    }
+  }
+
+  // Ensure all products point to the form template
+  const allProducts = await productRepo.find();
+  for (const prod of allProducts) {
+    if (!prod.formTemplateId) {
+      await productRepo.update(prod.id, { formTemplateId: generalForm.id });
+    }
+  }
+  console.log('  ✓ Form Template seeded & linked to products');
+
+  // ── 7. Scoring Model ───────────────────────────────────────────────────────
   const smRepo = ds.getRepository(ScoringModel);
   const ex = await smRepo.findOne({ where: { nameTh: 'แบบจำลองคะแนนพื้นฐาน' } });
   if (!ex) {
@@ -214,7 +248,7 @@ async function seed() {
   }
   console.log('  ✓ Scoring model seeded');
 
-  // ── 7. Approval Matrix ────────────────────────────────────────────────────
+  // ── 8. Approval Matrix ────────────────────────────────────────────────────
   const amRepo = ds.getRepository(ApprovalMatrix);
   const matrixData = [
     { level: 1, minAmount: 0,          maxAmount: 50000,      roleName: 'Credit Officer',        slaHours: 4,   escalationLevel: 2 },
@@ -231,7 +265,7 @@ async function seed() {
   }
   console.log('  ✓ Approval Matrix seeded (7 levels)');
 
-  // ── 8. Approval Criteria ──────────────────────────────────────────────────
+  // ── 9. Approval Criteria ──────────────────────────────────────────────────
   const acRepo = ds.getRepository(ApprovalCriteria);
   const exCriteria = await acRepo.findOne({ where: { name: 'เกณฑ์มาตรฐานสินเชื่อ' } });
   if (!exCriteria) {

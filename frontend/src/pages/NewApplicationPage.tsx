@@ -8,8 +8,19 @@ import { masterApi, integrationApi } from '../services/api';
 import toast from 'react-hot-toast';
 import { ArrowLeft, UserCheck, AlertTriangle } from 'lucide-react';
 
+function validateThaiNationalId(id: string): boolean {
+  if (!id || id.length !== 13 || !/^\d{13}$/.test(id)) return false;
+  let sum = 0;
+  for (let i = 0; i < 12; i++) sum += parseInt(id[i]) * (13 - i);
+  const checkDigit = (11 - (sum % 11)) % 10;
+  return checkDigit === parseInt(id[12]);
+}
+
 const schema = z.object({
-  nationalId: z.string().length(13, 'เลขบัตรประชาชนต้องมี 13 หลัก').regex(/^\d+$/, 'ต้องเป็นตัวเลขเท่านั้น'),
+  nationalId: z.string()
+    .length(13, 'เลขบัตรประชาชนต้องมี 13 หลัก')
+    .regex(/^\d+$/, 'ต้องเป็นตัวเลขเท่านั้น')
+    .refine(validateThaiNationalId, 'เลขบัตรประชาชนไม่ถูกต้อง (กรุณาตรวจสอบตัวเลข)'),
   nameTh: z.string().min(2, 'กรุณาระบุชื่อ-นามสกุล'),
   nameEn: z.string().optional(),
   phone: z.string().min(9, 'หมายเลขโทรศัพท์ไม่ถูกต้อง').optional().or(z.literal('')),

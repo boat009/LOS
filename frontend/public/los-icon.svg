@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="32" fill="#2563EB"/>
+  <!-- Loan/document icon -->
+  <rect x="16" y="12" width="24" height="32" rx="3" fill="white" opacity="0.9"/>
+  <rect x="20" y="18" width="16" height="2" rx="1" fill="#2563EB"/>
+  <rect x="20" y="23" width="16" height="2" rx="1" fill="#2563EB"/>
+  <rect x="20" y="28" width="10" height="2" rx="1" fill="#2563EB"/>
+  <!-- Coin/money symbol -->
+  <circle cx="42" cy="42" r="10" fill="#FCD34D"/>
+  <text x="42" y="47" font-size="13" font-weight="bold" fill="#92400E" text-anchor="middle" font-family="Arial,sans-serif">฿</text>
+</svg>

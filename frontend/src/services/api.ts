@@ -57,7 +57,8 @@ export const authApi = {
 
 // Integration API (Sale System)
 export const integrationApi = {
-  createApplication: (data: any) => api.post('/integration/applications', data),
+  // Internal endpoint — uses JWT auth (no API Key / HMAC required from the browser)
+  createApplication: (data: any) => api.post('/integration/applications/internal', data),
   getApplicationStatus: (id: string) => api.get(`/integration/applications/${id}/status`),
 };
 

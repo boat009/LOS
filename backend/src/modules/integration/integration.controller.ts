@@ -37,6 +37,22 @@ export class IntegrationController {
     return this.integrationService.createApplication(dto, saleUserId, ip);
   }
 
+  /**
+   * Internal endpoint — called by the LOS frontend (JWT auth).
+   * Allows Sale staff to create an application without needing API Key + HMAC.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('applications/internal')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Create application from internal LOS UI (JWT)' })
+  async createApplicationInternal(
+    @Body() dto: CreateApplicationDto,
+    @CurrentUser() user: any,
+    @ClientIp() ip: string,
+  ) {
+    return this.integrationService.createApplication(dto, user.id, ip);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('applications/:id/status')
   @ApiOperation({ summary: 'Get application status (for Sale System)' })
